@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NotScribe - AI Meeting Assistant</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body id="top">
+    <header class="site-header">
+      <div class="container nav">
+        <a class="logo" href="#top"
+          ><span class="logo-meet">Not</span
+          ><span class="logo-scribe">Scribe</span></a
+        >
+        <nav>
+          <a href="#top">Home</a>
+          <a href="#results">Results</a>
+          <a href="#how">How it works</a>
+          <a href="#models">Models</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- Upload card -->
+      <section class="card" id="upload-card">
+        <p class="card-label" id="file-label">
+          Select a meeting recording to begin
+        </p>
+
+        <label class="dropzone" id="dropzone" for="file-input">
+          <input
+            type="file"
+            id="file-input"
+            accept="audio/*,video/mp4,video/webm,.mp3,.wav,.m4a,.mp4,.mpeg,.mpga,.webm,.ogg,.flac"
+            hidden
+          />
+          <span class="dz-title"
+            >Drop an audio file here, or click to browse</span
+          >
+          <span class="dz-sub" id="dz-sub"
+            >English-language recordings: mp3, wav, m4a, mp4, webm, ogg,
+            flac</span
+          >
+        </label>
+
+        <div class="actions">
+          <button class="btn primary" id="btn-process" disabled>Process</button>
+          <button class="btn secondary" id="btn-reset">Start over</button>
+        </div>
+
+        <details class="glossary">
+          <summary>Domain terms (optional)</summary>
+          <textarea
+            id="glossary"
+            rows="2"
+            placeholder="Acronyms and technical terms to favour, separated by commas, e.g. Kubernetes, F1 score, OKR"
+          ></textarea>
+        </details>
+
+        <div class="error hidden" id="error-banner" role="alert"></div>
+
+        <ol class="stepper hidden" id="stepper">
+          <li data-stage="transcribe">
+            <span class="dot"></span><span>Transcribe audio</span>
+          </li>
+          <li data-stage="refine">
+            <span class="dot"></span><span>Refine terminology</span>
+          </li>
+          <li data-stage="extract">
+            <span class="dot"></span><span>Extract minutes &amp; tasks</span>
+          </li>
+        </ol>
+        <p class="status-msg hidden" id="status-msg"></p>
+      </section>
+
+      <!-- Results -->
+      <section id="results" class="results hidden">
+        <div class="export-bar">
+          <span class="export-title">Download meeting record</span>
+          <a class="btn primary small disabled" id="dl-pdf" href="#">PDF</a>
+          <a class="btn secondary small disabled" id="dl-txt" href="#">Text</a>
+          <a class="btn secondary small disabled" id="dl-json" href="#">JSON</a>
+        </div>
+
+        <div class="grid-2">
+          <article class="panel">
+            <header>
+              <h3>Raw transcript</h3>
+              <button class="link-btn" id="dl-raw" disabled>
+                Download .txt
+              </button>
+            </header>
+            <div class="transcript" id="raw-transcript">
+              <p class="placeholder">Waiting for transcription...</p>
+            </div>
+          </article>
+          <article class="panel">
+            <header>
+              <h3>Refined transcript</h3>
+              <button class="link-btn" id="dl-refined" disabled>
+                Download .txt
+              </button>
+            </header>
+            <div class="transcript" id="refined-transcript">
+              <p class="placeholder">Waiting for refinement...</p>
+            </div>
+          </article>
+        </div>
+
+        <div id="record" class="hidden">
+          <article class="panel">
+            <header><h3>Summary</h3></header>
+            <p id="summary"></p>
+          </article>
+          <article class="panel">
+            <header><h3>Meeting minutes</h3></header>
+            <div id="minutes"></div>
+          </article>
+          <article class="panel">
+            <header><h3>Key decisions</h3></header>
+            <div id="decisions"></div>
+          </article>
+          <article class="panel">
+            <header><h3>Action items</h3></header>
+            <div id="actions-table"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Info text, in the style of the reference design -->
+      <section class="prose" id="how">
+        <h1>AI Meeting Assistant</h1>
+        <p>
+          MeetScribe turns a recorded meeting into an accurate transcript and a
+          structured written record. Where a task owner or deadline was not
+          stated in the recording, it is shown as <em>Unspecified</em> rather
+          than guessed.
+        </p>
+        <p><strong>How to use MeetScribe</strong></p>
+        <ol>
+          <li>Select or drop an English-language meeting recording above.</li>
+          <li>
+            Optionally list domain terms or acronyms that the recording uses.
+          </li>
+          <li>
+            Click <em>Process</em>. The three stages run in order and you can
+            watch their progress.
+          </li>
+          <li>
+            Compare the raw and refined transcripts, review the minutes,
+            decisions and tasks, then download the record as PDF, text or JSON.
+          </li>
+        </ol>
+      </section>
+
+      <section class="prose" id="models">
+        <h2>Models used</h2>
+        <ul id="models-list">
+          <li>Loading...</li>
+        </ul>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
